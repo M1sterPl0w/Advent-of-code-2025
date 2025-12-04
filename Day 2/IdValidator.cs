@@ -2,7 +2,7 @@
 {
 	internal static class IdValidator
 	{
-		public static long ValidateRanges(IEnumerable<string> ranges)
+		public static long ValidateRangesPartOne(IEnumerable<string> ranges)
 		{
 			long total = 0;
 			foreach (var range in ranges)
@@ -35,6 +35,45 @@
 			}
 
 			return total;
+		}
+
+		public static long ValidateRangesPartTwo(IEnumerable<string> ranges)
+		{
+			long total = 0;
+
+			foreach (var range in ranges)
+			{
+				var splittedRange = range.Split('-');
+				var min = long.Parse(splittedRange[0]);
+				var max = long.Parse(splittedRange[1]);
+
+				var counter = min;
+
+				while (counter <= max)
+				{
+					var hasRepeatingPattern = HasRepeatingPattern(counter);
+					if (hasRepeatingPattern)
+					{
+						total += counter;
+					}
+
+					counter++;
+				}
+
+			}
+
+			return total;
+		}
+
+		static bool HasRepeatingPattern(long number)
+		{
+			string s = number.ToString();
+			if (s.Length <= 1) return false;
+
+			string doubled = s + s;
+			string trimmed = doubled.Substring(1, doubled.Length - 2);
+
+			return trimmed.Contains(s);
 		}
 	}
 }
